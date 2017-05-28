@@ -36,13 +36,18 @@ function command(myPlatform, myBus){
             return;
         } else {
             this.executeCommand(myCommand);
+            $('#listHistory').append($('<option>', { 
+                value: strCommand,
+                text : strCommand 
+            }));
         }
 
         
     }
     //--------------------------------------------------------------
     this.executeCommand = function(myCommand){
-        d3.select(myPlatform.selector).selectAll("polygon").remove();
+        //d3.select(myPlatform.selector).selectAll("polygon").remove();
+        d3.select(myPlatform.selector).selectAll("path").remove();
         myBus.isInitialized = true;
         var commands = myCommand.toUpperCase().split(" ");
         
