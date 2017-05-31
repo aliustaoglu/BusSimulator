@@ -20,9 +20,8 @@ function platform(selector, rows, cols, height, width){
     //---------------------------------------------------------------------
     var paintPark = function(x, y){
         var sq = svg.append("rect")
-            .attr({"x": x*width + x, "y":y*height + y})
-            .style({"width": width, "height":height, "fill": "yellow", "stroke": "blue", "stroke-width" : 1})
-            ;
+        .attr({"x": x*width + x, "y":y*height + y, "width": width, "height":height})
+        .style({ "fill": "yellow", "stroke": "blue", "stroke-width" : 1});
     }
     //---------------------------------------------------------------------
     this.paintBus = function(myBus){
