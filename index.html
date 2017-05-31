@@ -3,40 +3,64 @@
     <head>
         <meta charset="utf-8">
         <title>Bus In a Carpark Simulator</title>
-        <meta name="description" content="">
         <script src="https://d3js.org/d3.v3.min.js"></script>
+        
         <script
 			  src="https://code.jquery.com/jquery-3.2.1.min.js"
 			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 			  crossorigin="anonymous"></script>
+        <script src="js/vendor/underscore-min.js"></script>
+        <script src="js/vendor/backbone-min.js"></script>
+        
+
         <script src="js/classes/platform.js"></script>
         <script src="js/classes/bus.js"></script>
         <script src="js/classes/utility.js"></script>
         <script src="js/classes/command.js"></script>
-        <script src="js/main.js"></script>
-        
+
+
         <link rel="stylesheet" type="text/css" href="css/main.css">
-        
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     </head>
     <body>
-        <div class="platform">
+        
+        <div class="container">
+            <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                <a class="navbar-brand" href="#">Bus Park</a>
+                </div>
+                <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Load Examples <span class="caret"></span></a>
+                    <ul class="dropdown-menu ">
+                        <li><a href="#examples/bouncing">Bouncing</a></li>
+                        <li><a href="#examples/chesshorse">Chess Horse</a></li>
+                        <li><a href="#examples/cross">Cross</a></li>
+                        <li><a href="#examples/eight">Eight</a></li>
+                        <li><a href="#examples/fullscan">Full Scan</a></li>
+                        <li><a href="#examples/nokiasnake">Nokia Snake</a></li>
+                        <li><a href="#examples/randomcorrupted">Random Corrupted Text</a></li>
+                        <li><a href="#examples/randomerror">Random Error</a></li>
+                        <li><a href="#examples/tour">Tour</a></li>
+                    </ul>
+                </li>
+                <li><a href="#test">Unit Testing</a></li>
+                <li><a href="#about">About</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="col-8">
+            <div class="platform">
+            </div>
         </div>
-        <div class="control">
-            
-            
-            Command: <input type="text" id="txtCommand" style="width:300px"></input>
-            <input id="btnCommand" type="button" value="Send" onClick="execCommand()" /><br />
-            <input type="file" name="pic" accept="image/*">
-            <div>Command History:</div>
-            <select id="listHistory" size="15" style="width:430px;" ondblclick="executeHistory()">
-                
-            </select>
-        </div>
-        <br/>
+        <div id="console"></div>
+
     </body>
 </html>
 
+
+        <script src="js/main.js"></script>

@@ -6,35 +6,55 @@ function command(myPlatform, myBus){
     var validCommands = ["PLACE", "MOVE", "LEFT", "RIGHT", "REPORT"];
     var validFirstCommands = ["PLACE", "HELP"];
     //--------------------------------------------------------------
+    this.splitCommand = function(myCommand){
+        myCommand = myCommand.trim();
+        var ind = myCommand.trim().indexOf(' ');
+        var command = myCommand.toUpperCase();
+        if (ind>0)
+            command = myCommand.substr(0,  ind+1).trim().toUpperCase();
+        var params = myCommand.substr(ind+1).replace(/\s\s+/g, '').trim().split(",");
+        return {command: command, params: params};
+    }
+    //--------------------------------------------------------------
     // Check if this is a legit command
-    var isCommandValid = function(){
-        var commands = myCommand.split(" ");
-        if (commands.length<1)
-            return "No command.";
+    this.isCommandValid = function(){
+        var err = "";
+        var command = this.splitCommand(myCommand).command;
+        var params = this.splitCommand(myCommand).params;
+        if (command === "")
+            err = "No command.";
         if (!myBus.isInitialized) {
-            if (validFirstCommands.indexOf(commands[0].toUpperCase())<0)
-                return "Not a valid first command. Bus needs to be placed on platform first";
+            if (validFirstCommands.indexOf(command.toUpperCase())<0)
+                err = "Not a valid first command. Bus needs to be placed on platform first";
         } else {
-            if (validFirstCommands.indexOf(commands[0].toUpperCase())<0){
-                if (validCommands.indexOf(commands[0].toUpperCase())<0 || commands.length!=1)
-                    return "Not a valid command";
+            if (validFirstCommands.indexOf(command.toUpperCase())<0){
+                if (validCommands.indexOf(command.toUpperCase())<0 || params.length!=1)
+                    err = "Not a valid command";
             } else {
-                if (commands.length != 4)
-                    return "Not a valid command";
-
+                if (params.length != 3)
+                    err = "Not a valid command";
+                else{
+                    if (DIRECTION[params[2].trim().toUpperCase()] === undefined)
+                        err = "Not a valid direction";
+                    if (params[0] != parseInt(params[0],10) || params[0] != parseInt(params[0],10))
+                        err = "Not valid coordinates";
+                }
             }
         }
-        return "";
+        this.cmd = { command :  command, params: params};
+        if (err != "")
+            err = "<span style='color:red'>" + err + "</span>"
+        return err;
     }
     //--------------------------------------------------------------
     this.setCommand = function(strCommand){
         myCommand= strCommand.replace(/\s\s+/g, ' ').trim(); // Replace all whitespaces with single whitespace
-        myBus.isInitialized = true;
-        var commandCheck = isCommandValid();
+        var commandCheck = this.isCommandValid();
         if (commandCheck !="") {
-            alert(commandCheck);
+            $("#status").html(commandCheck);
             return;
         } else {
+            $("#status").html("");
             this.executeCommand(myCommand);
             $('#listHistory').append($('<option>', { 
                 value: strCommand,
@@ -46,16 +66,12 @@ function command(myPlatform, myBus){
     }
     //--------------------------------------------------------------
     this.executeCommand = function(myCommand){
-        //d3.select(myPlatform.selector).selectAll("polygon").remove();
         d3.select(myPlatform.selector).selectAll("path").remove();
         myBus.isInitialized = true;
-        var commands = myCommand.toUpperCase().split(" ");
-        
-        //myBus[commands[0].toLowerCase()].call(commands);
-
-        switch (commands[0]){
+        var cmd = this.splitCommand(myCommand);
+        switch (cmd.command.toUpperCase()){
             case "PLACE":
-            myBus.place(parseInt(commands[1]), parseInt(commands[2]), parseInt(DIRECTION[commands[3].toUpperCase()]));
+            myBus.place(parseInt(cmd.params[0]), parseInt(cmd.params[1]), parseInt(DIRECTION[cmd.params[2].toUpperCase().trim()]));
             break;
             case "MOVE": 
             myBus.move();
@@ -70,12 +86,6 @@ function command(myPlatform, myBus){
             myBus.report();
             break;
         }
-
-
-        //myBus.x = 4;
-        //myBus.y = 4;
-        //myBus.orient = DIRECTION.SOUTH;
-
         myPlatform.paintBus(myBus);
     }
     //--------------------------------------------------------------
