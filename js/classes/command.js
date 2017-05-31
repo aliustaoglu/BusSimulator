@@ -17,7 +17,9 @@ function command(myPlatform, myBus){
     }
     //--------------------------------------------------------------
     // Check if this is a legit command
-    this.isCommandValid = function(){
+    this.isCommandValid = function(cmd){
+        if (cmd !== undefined)
+            myCommand = cmd;
         var err = "";
         var command = this.splitCommand(myCommand).command;
         var params = this.splitCommand(myCommand).params;
@@ -26,8 +28,8 @@ function command(myPlatform, myBus){
         if (!myBus.isInitialized) {
             if (validFirstCommands.indexOf(command.toUpperCase())<0)
                 err = "Not a valid first command. Bus needs to be placed on platform first";
-        } else {
-            if (validFirstCommands.indexOf(command.toUpperCase())<0){
+        }
+        if (validFirstCommands.indexOf(command.toUpperCase())<0){
                 if (validCommands.indexOf(command.toUpperCase())<0 || params.length!=1)
                     err = "Not a valid command";
             } else {
@@ -38,9 +40,10 @@ function command(myPlatform, myBus){
                         err = "Not a valid direction";
                     if (params[0] != parseInt(params[0],10) || params[0] != parseInt(params[0],10))
                         err = "Not valid coordinates";
+                    if ((params[0] > myPlatform.rows-1) || (params[1] > myPlatform.cols-1))
+                        err = "Not valid coordinates";
                 }
             }
-        }
         this.cmd = { command :  command, params: params};
         if (err != "")
             err = "<span style='color:red'>" + err + "</span>"

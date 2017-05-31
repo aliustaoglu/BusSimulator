@@ -44,6 +44,7 @@ $(function() {
     
 
   });
+  
 
   var MainView = Backbone.View.extend({
     initialize: function(){
@@ -70,11 +71,20 @@ $(function() {
     }
   })
 
+var AboutView = Backbone.View.extend({
+    initialize: function(){
+      $("#console").html(this.template());
+    },
+    template: function(){
+      return "Pure JS Single Page App written by Cuneyt Aliustaoglu. It does not need server side so can run in any browser.<br /> Tested on <b>Google Chrome</b>.";
+    }
+  })
 
   var AppRouter = Backbone.Router.extend({
       routes: {
           "" : "mainRoute",
           "examples/:example": "examplesRoute",
+          "about" : "aboutRoute"
       }
   });
 
@@ -85,6 +95,9 @@ $(function() {
   });
   app_router.on('route:mainRoute', function(actions) {
       this.view = new MainView();
+  });
+  app_router.on('route:aboutRoute', function(actions) {
+      this.view = new AboutView();
   });
 
   Backbone.history.start();
@@ -113,7 +126,7 @@ $(function() {
 
   this.executeStep = function(){
     var commandOption = $("#listExamples option[value='step" + ($("#listExamples").children().length-1) + "']");
-    var com = myCommand.isCommandValid();
+    var com = myCommand.isCommandValid(commandOption.text());
     if (com=="") {
       myCommand.executeCommand(commandOption.text());
       commandOption.remove();

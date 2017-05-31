@@ -53,7 +53,8 @@ function bus(x, y, orient, plt){
     }
 
     this.report = function(){
-        alert("x:" + this.x + "\ny:" + this.y + "\norient:" + this.orient);
+        var dir = ["EAST", "NORTH", "WEST", "SOUTH"];
+        alert("x:" + this.x + "\ny:" + this.y + "\norient:" + dir[this.orient]);
     }
 
 }
